@@ -46,6 +46,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [language, setLanguage] = useState('ID'); // 'ID' or 'EN'
+  const [isLoading, setIsLoading] = useState(true);
 
   const t = translations[language]; // Current translation helper
 
@@ -54,6 +55,13 @@ function App() {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    // Initial loading simulation
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
@@ -145,6 +153,18 @@ function App() {
       addMessage(botMsg);
     }, 1500);
   };
+
+  if (isLoading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-content">
+          <img src={logoBandung} alt="Logo" className="loading-logo" />
+          <div className="loading-spinner"></div>
+          <p>Memuat Asisten...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app-container">
