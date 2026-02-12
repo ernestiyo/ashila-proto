@@ -160,9 +160,31 @@ body {
   max-width: 120%;
   /* Allow slightly larger to fill */
   object-fit: contain;
-  mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+  /* mask-image removed/modified to allow overlay to look natural */
+  mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
   /* Add depth to avatar */
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(26, 42, 108, 0.0);
+  /* Transparent initially */
+  pointer-events: none;
+  transition: background 0.5s ease;
+  z-index: 2;
+  /* Above image */
+}
+
+.avatar-overlay.active {
+  background: rgba(26, 42, 108, 0.5);
+  /* Navy with opacity */
+  backdrop-filter: blur(2px);
+  /* Slight blur for focus on chat */
 }
 
 /* Interface Layer */
@@ -223,17 +245,24 @@ body {
   top: -60px;
   /* Float above chat area */
   left: 20px;
-  width: 40px;
+  /* Changed from circle to pill */
   height: 40px;
-  border-radius: 50%;
+  padding: 0 16px;
+  border-radius: 20px;
   border: none;
   background: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  /* Space between icon and text */
   cursor: pointer;
   z-index: 60;
+
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
 }
 
 /* Messages */

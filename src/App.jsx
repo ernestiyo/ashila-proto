@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import { Mic, Send, ArrowLeft } from 'lucide-react';
+import { Mic, Send, ArrowLeft, MessageCircle } from 'lucide-react';
 import logoBandung from './assets/img/logobandung.png';
+import avatarImg from './assets/img/avatar.png';
 import './index.css';
-
-// Placeholder Assets (Avatar still placeholder as requested)
-const AVATAR_PLACEHOLDER = "https://placehold.co/400x800/20B2AA/FFFFFF.png?text=Teh+Indira+Avatar";
 
 function App() {
   const [hasStarted, setHasStarted] = useState(false);
@@ -90,7 +88,9 @@ function App() {
 
       {/* Main Avatar Area */}
       <div className="avatar-container">
-        <img src={AVATAR_PLACEHOLDER} alt="Teh Indira" className="avatar-image" />
+        <img src={avatarImg} alt="Teh Indira" className="avatar-image" />
+        {/* Navy Overlay when chat is active */}
+        <div className={`avatar-overlay ${hasStarted ? 'active' : ''}`}></div>
       </div>
 
       {/* Bottom Sheet / Interface */}
@@ -102,17 +102,19 @@ function App() {
               {/* Simple wave simulation */}
               <span></span><span></span><span></span><span></span><span></span>
             </div>
-            <p>Katakan <strong>"Punten Teh"</strong> untuk<br />memulai setiap percakapan</p>
+            <p>Katakan <strong>"Punten Teh"</strong> atau<br />ketuk tombol di bawah</p>
             <button className="tap-to-start-btn">
-              👆 Tap to Start
+              <MessageCircle size={18} />
+              <span>Mulai Percakapan</span>
             </button>
           </div>
         ) : (
           // ACTIVE CHAT STATE
           <div className="chat-interface">
-            {/* Back Button (Visual only for now) */}
-            <button className="back-button glass-icon" onClick={() => setHasStarted(false)}>
-              <ArrowLeft size={24} color="white" />
+            {/* Back Button (Improved) */}
+            <button className="back-button glass-panel" onClick={() => setHasStarted(false)}>
+              <ArrowLeft size={18} color="#333" />
+              <span>Tutup Chat</span>
             </button>
 
             {/* Messages Area */}
