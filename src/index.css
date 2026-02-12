@@ -29,9 +29,20 @@ body {
   /* Desktop Presentation Background */
   background: #1a1a1a;
   min-height: 100vh;
+  /* Flexbox only for desktop to center the "Phone" */
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
+}
+
+/* Mobile: Remove centering, let it fill screen */
+@media (max-width: 450px) {
+  body {
+    display: block;
+    background: #1a1a1a;
+    /* Or app background color if needed to avoid flicker */
+  }
 }
 
 /* App Container - Mobile Portrait Simulation */
@@ -40,9 +51,14 @@ body {
   width: 100%;
   max-width: 430px;
   /* iPhone Pro Max width approximation */
+
+  /* Use Dynamic Viewport Height for mobile browsers (address bar fix) */
   height: 100vh;
-  max-height: 932px;
-  /* iPhone Pro Max height */
+  height: 100dvh;
+
+  /* Center horizontally if body is block (mobile) */
+  margin: 0 auto;
+
   overflow: hidden;
   display: flex;
   flex-direction: column;
