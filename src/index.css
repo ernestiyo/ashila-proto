@@ -312,8 +312,45 @@ body {
   border: none;
 }
 
+/* Suggestions Chips */
+.suggestions-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 10px 0;
+  margin-bottom: 5px;
+  /* Hide scrollbar */
+  scrollbar-width: none;
+}
+
+.suggestions-container::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #333;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.chip:hover {
+  background: #1e293b;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Input Area */
 .input-area {
-  margin-top: 10px;
+  margin-top: 0px;
+  /* Reduced margin since chips are above */
   /* Floating pill shape */
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
