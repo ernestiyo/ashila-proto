@@ -1,41 +1,8 @@
-import React, { useState, useRef, useEffect, Component } from 'react';
-import { Send, ArrowLeft, MessageCircle } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Mic, Send, ArrowLeft, MessageCircle } from 'lucide-react';
 import logoBandung from './assets/img/logobandung.png';
 import avatarImg from './assets/img/avatar.png';
 import './index.css';
-
-// Error Boundary for Debugging
-class ErrorBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error("Uncaught error:", error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{ padding: '20px', color: 'red', background: 'white', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
-          <h2>⚠️ Terjadi Kesalahan</h2>
-          <p style={{ fontSize: '0.8rem', marginTop: '10px', color: '#555' }}>
-            {this.state.error && this.state.error.toString()}
-          </p>
-          <button onClick={() => window.location.reload()} style={{ marginTop: '20px', padding: '10px 20px', background: '#333', color: 'white', border: 'none', borderRadius: '5px' }}>
-            Muat Ulang
-          </button>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
 
 // Translation Dictionary
 const translations = {
@@ -78,10 +45,10 @@ function App() {
   const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [language, setLanguage] = useState('ID');
+  const [language, setLanguage] = useState('ID'); // 'ID' or 'EN'
   const [isLoading, setIsLoading] = useState(true);
 
-  const t = translations[language];
+  const t = translations[language]; // Current translation helper
 
   const messagesEndRef = useRef(null);
 
@@ -200,108 +167,106 @@ function App() {
   }
 
   return (
-    <ErrorBoundary>
-      <div className="app-container">
-        {/* Header */}
-        <header className="app-header">
-          <div className="header-left">
-            <img src={logoBandung} alt="Logo Kota Bandung" className="header-logo" />
-            <div className="header-divider"></div>
-            <div className="header-text">
-              <h1>{t.headerTitle}</h1>
-              <p>{t.headerSubtitle}</p>
-            </div>
+    <div className="app-container">
+      {/* Header */}
+      <header className="app-header">
+        <div className="header-left">
+          <img src={logoBandung} alt="Logo Kota Bandung" className="header-logo" />
+          <div className="header-divider"></div>
+          <div className="header-text">
+            <h1>{t.headerTitle}</h1>
+            <p>{t.headerSubtitle}</p>
           </div>
-          <div className="header-right">
-            <button
-              className="lang-switch"
-              onClick={() => setLanguage(prev => prev === 'ID' ? 'EN' : 'ID')}
-            >
-              <span className={language === 'ID' ? 'active' : ''}>ID</span>
-              <span className={language === 'EN' ? 'active' : ''}>EN</span>
+        </div>
+        <div className="header-right">
+          <button
+            className="lang-switch"
+            onClick={() => setLanguage(prev => prev === 'ID' ? 'EN' : 'ID')}
+          >
+            <span className={language === 'ID' ? 'active' : ''}>ID</span>
+            <span className={language === 'EN' ? 'active' : ''}>EN</span>
+          </button>
+        </div>
+      </header>
+
+      {/* Main Avatar Area */}
+      <div className="avatar-container">
+        <img src={avatarImg} alt="Teh Indira" className="avatar-image" />
+        {/* Navy Overlay when chat is active */}
+        <div className={`avatar-overlay ${hasStarted ? 'active' : ''}`}></div>
+      </div>
+
+      {/* Bottom Sheet / Interface */}
+      <div className={`interface-layer ${hasStarted ? 'active' : 'idle'}`}>
+        {!hasStarted ? (
+          // IDLE STATE
+          <div className="start-prompt glass-panel" onClick={handleStart}>
+            <div className="audio-wave-icon">
+              {/* Simple wave simulation */}
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <p>{t.startPrompt}</p>
+            <button className="tap-to-start-btn">
+              <MessageCircle size={18} />
+              <span>{t.startBtn}</span>
             </button>
           </div>
-        </header>
+        ) : (
+          // ACTIVE CHAT STATE
+          <div className="chat-interface">
+            {/* Back Button (Improved) */}
+            <button className="back-button glass-panel" onClick={() => setHasStarted(false)}>
+              <ArrowLeft size={18} color="#333" />
+              <span>{t.closeBtn}</span>
+            </button>
 
-        {/* Main Avatar Area */}
-        <div className="avatar-container">
-          <img src={avatarImg} alt="Teh Indira" className="avatar-image" />
-          {/* Navy Overlay when chat is active */}
-          <div className={`avatar-overlay ${hasStarted ? 'active' : ''}`}></div>
-        </div>
-
-        {/* Bottom Sheet / Interface */}
-        <div className={`interface-layer ${hasStarted ? 'active' : 'idle'}`}>
-          {!hasStarted ? (
-            // IDLE STATE
-            <div className="start-prompt glass-panel" onClick={handleStart}>
-              <div className="audio-wave-icon">
-                {/* Simple wave simulation */}
-                <span></span><span></span><span></span><span></span><span></span>
-              </div>
-              <p>{t.startPrompt}</p>
-              <button className="tap-to-start-btn">
-                <MessageCircle size={18} />
-                <span>{t.startBtn}</span>
-              </button>
+            {/* Messages Area */}
+            <div className="messages-area">
+              {messages.map(msg => (
+                <div key={msg.id} className={`message-bubble ${msg.sender} glass-panel`}>
+                  {msg.text.split('\n').map((line, i) => (
+                    <span key={i}>{line}<br /></span>
+                  ))}
+                </div>
+              ))}
+              {isTyping && (
+                <div className="message-bubble bot glass-panel typing-indicator">
+                  <span></span><span></span><span></span>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
             </div>
-          ) : (
-            // ACTIVE CHAT STATE
-            <div className="chat-interface">
-              {/* Back Button (Improved) */}
-              <button className="back-button glass-panel" onClick={() => setHasStarted(false)}>
-                <ArrowLeft size={18} color="#333" />
-                <span>{t.closeBtn}</span>
-              </button>
 
-              {/* Messages Area */}
-              <div className="messages-area">
-                {messages.map(msg => (
-                  <div key={msg.id} className={`message-bubble ${msg.sender} glass-panel`}>
-                    {msg.text.split('\n').map((line, i) => (
-                      <span key={i}>{line}<br /></span>
-                    ))}
-                  </div>
-                ))}
-                {isTyping && (
-                  <div className="message-bubble bot glass-panel typing-indicator">
-                    <span></span><span></span><span></span>
-                  </div>
-                )}
-                <div ref={messagesEndRef} />
-              </div>
-
-              {/* Suggestion Chips */}
-              <div className="suggestions-container">
-                {t.suggestions.map((s, idx) => (
-                  <button key={idx} className="chip glass-panel" onClick={() => onChipClick(s)}>
-                    {s}
-                  </button>
-                ))}
-              </div>
-
-              {/* Input Area */}
-              <form className="input-area glass-input" onSubmit={handleSendMessage}>
-                <input
-                  type="text"
-                  placeholder={t.inputPlaceholder}
-                  value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
-                />
-                <button
-                  type="submit"
-                  className="action-btn send"
-                  disabled={!inputMessage.trim()}
-                  style={{ opacity: inputMessage.trim() ? 1 : 0.4, cursor: inputMessage.trim() ? 'pointer' : 'default' }}
-                >
-                  <Send size={20} />
+            {/* Suggestion Chips */}
+            <div className="suggestions-container">
+              {t.suggestions.map((s, idx) => (
+                <button key={idx} className="chip glass-panel" onClick={() => onChipClick(s)}>
+                  {s}
                 </button>
-              </form>
+              ))}
             </div>
-          )}
-        </div>
+
+            {/* Input Area */}
+            <form className="input-area glass-input" onSubmit={handleSendMessage}>
+              <input
+                type="text"
+                placeholder={t.inputPlaceholder}
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+              />
+              <button
+                type="submit"
+                className="action-btn send"
+                disabled={!inputMessage.trim()}
+                style={{ opacity: inputMessage.trim() ? 1 : 0.4, cursor: inputMessage.trim() ? 'pointer' : 'default' }}
+              >
+                <Send size={20} />
+              </button>
+            </form>
+          </div>
+        )}
       </div>
-    </ErrorBoundary>
+    </div>
   );
 }
 

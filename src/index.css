@@ -41,9 +41,8 @@ body {
   max-width: 430px;
   /* iPhone Pro Max width approximation */
   height: 100vh;
-  height: 100dvh;
-  /* Dynamic viewport height for mobile */
   max-height: 932px;
+  /* iPhone Pro Max height */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -78,15 +77,72 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   z-index: 100;
-  pointer-events: none;
-  /* Let clicks pass through if needed, but text selectable */
 }
 
-.app-header * {
-  pointer-events: auto;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* ... skipped ... */
+.header-logo {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+}
+
+.header-divider {
+  width: 1.5px;
+  height: 36px;
+  background-color: #444;
+  opacity: 0.8;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header-text h1 {
+  color: #222;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.header-text p {
+  color: #555;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* Language Switch */
+.lang-switch {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 4px;
+  display: flex;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.lang-switch span {
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: #666;
+  font-size: 0.7rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.lang-switch span.active {
+  background: #1e293b;
+  color: white;
+}
 
 /* Avatar Area */
 .avatar-container {
@@ -102,11 +158,12 @@ body {
 .avatar-image {
   height: 85%;
   max-width: 120%;
+  /* Allow slightly larger to fill */
   object-fit: contain;
-  /* Simplified mask for compatibility */
-  -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+  /* mask-image removed/modified to allow overlay to look natural */
   mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+  /* Add depth to avatar */
 }
 
 .avatar-overlay {
