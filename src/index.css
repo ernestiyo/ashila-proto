@@ -53,6 +53,11 @@ body {
   body {
     display: block;
     background: #1a1a1a;
+    /* Force fixed to prevent any scrolling of the body itself */
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 }
 
@@ -104,151 +109,23 @@ body {
   border-radius: 16px;
 }
 
-/* Header */
-.app-header {
-  position: absolute;
-  top: 40px;
-  left: 24px;
-  right: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  z-index: 100;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.header-logo {
-  height: 44px;
-  width: auto;
-  object-fit: contain;
-}
-
-.header-divider {
-  width: 1.5px;
-  height: 36px;
-  background-color: #444;
-  opacity: 0.8;
-}
-
-.header-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.header-text h1 {
-  color: #222;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.header-text p {
-  color: #555;
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-}
-
-/* Language Switch */
-.lang-switch {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 8px;
-  padding: 4px;
-  display: flex;
-  gap: 2px;
-  cursor: pointer;
-}
-
-.lang-switch span {
-  padding: 4px 8px;
-  border-radius: 6px;
-  color: #666;
-  font-size: 0.7rem;
-  font-weight: 700;
-  transition: all 0.2s;
-}
-
-.lang-switch span.active {
-  background: #1e293b;
-  color: white;
-}
-
-/* Avatar Area */
-.avatar-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  position: relative;
-  z-index: 1;
-  margin-bottom: -20px;
-}
-
-.avatar-image {
-  height: 85%;
-  max-width: 120%;
-  /* Allow slightly larger to fill */
-  object-fit: contain;
-  /* mask-image removed/modified to allow overlay to look natural */
-  mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
-  /* Add depth to avatar */
-}
-
-.avatar-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(26, 42, 108, 0.0);
-  /* Transparent initially */
-  pointer-events: none;
-  transition: background 0.5s ease;
-  z-index: 2;
-  /* Above image */
-}
-
-.avatar-overlay.active {
-  background: rgba(26, 42, 108, 0.5);
-  /* Navy with opacity */
-  backdrop-filter: blur(2px);
-  /* Slight blur for focus on chat */
-}
+/* ... (skip to interface layer revert) ... */
 
 /* Interface Layer */
 .interface-layer {
   position: absolute;
+  bottom: 0;
   left: 0;
   width: 100%;
+  padding-bottom: 30px;
   z-index: 50;
   transition: all 0.5s ease;
-
-  /* Idle State: Bottom sheet */
-  bottom: 0;
-  height: auto;
-}
-
-.interface-layer.active {
-  /* Active State: Full Screen */
-  top: 0;
-  bottom: 0;
-  height: 100%;
 }
 
 /* Idle State Prompt */
 .start-prompt {
   background: rgba(255, 255, 255, 0.85);
   margin: 0 40px 60px 40px;
-  /* Keep margin for bottom sheet look */
   padding: 30px 20px;
   text-align: center;
   color: #333;
@@ -260,16 +137,11 @@ body {
 
 /* Chat Interface */
 .chat-interface {
-  padding: 0 20px 20px 20px;
+  padding: 0 20px 10px 20px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-
-  /* Full height of the interface layer */
-  height: 100%;
-
-  /* Space for Header */
-  padding-top: 90px;
+  height: 60vh;
 }
 
 .back-button {
