@@ -227,19 +227,28 @@ body {
 /* Interface Layer */
 .interface-layer {
   position: absolute;
-  bottom: 0;
   left: 0;
   width: 100%;
-  padding-bottom: 30px;
   z-index: 50;
   transition: all 0.5s ease;
+
+  /* Idle State: Bottom sheet */
+  bottom: 0;
+  height: auto;
+}
+
+.interface-layer.active {
+  /* Active State: Full Screen */
+  top: 0;
+  bottom: 0;
+  height: 100%;
 }
 
 /* Idle State Prompt */
 .start-prompt {
   background: rgba(255, 255, 255, 0.85);
-  /* Whiter */
   margin: 0 40px 60px 40px;
+  /* Keep margin for bottom sheet look */
   padding: 30px 20px;
   text-align: center;
   color: #333;
@@ -249,32 +258,18 @@ body {
   border: 1px solid white;
 }
 
-.audio-wave-icon span {
-  background: #333;
-}
-
-.tap-to-start-btn {
-  margin-top: 15px;
-  background: #1e293b;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
 /* Chat Interface */
 .chat-interface {
-  padding: 0 20px 10px 20px;
+  padding: 0 20px 20px 20px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  height: 60vh;
+
+  /* Full height of the interface layer */
+  height: 100%;
+
+  /* Space for Header */
+  padding-top: 90px;
 }
 
 .back-button {
